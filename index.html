@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Commercial Photo Works</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Shippori+Mincho:wght@400;500&display=swap">
+<style>
+/* Layout: a low-key gallery. Warm-neutral black ground, small centred serif titles, wide negative space; six industries and their works are shown as even thumbnail grids so they can be scanned at a glance; tapping opens the full print. One committed dark look, by choice. */
+:root{
+  --ground:#12100f;     /* warm-neutral black, never pure */
+  --raise:#1b1917;      /* behind loading prints */
+  --ivory:#ece6dc;      /* clean warm white */
+  --soft:#9d958a;       /* secondary text */
+  --hair:#2e2a26;       /* hairlines */
+  --amber:#c4a57a;      /* practical-light amber, used for small labels only */
+  --f-latin:"Cormorant Garamond","Times New Roman",serif;
+  --f-ja:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+em,i{font-style:normal}
+html{background:var(--ground)}
+body{margin:0;background:var(--ground);color:var(--ivory);font-family:var(--f-ja);font-size:15px;line-height:2;letter-spacing:.04em;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+:focus-visible{outline:1px solid var(--amber);outline-offset:4px}
+.cap-l{font-family:var(--f-latin);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber)}
+img{display:block}
+.fade{opacity:1;transition:opacity 1.2s ease}
+.fade.loading{opacity:.001}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:linear-gradient(var(--ground) 70%,transparent)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-block:18px 22px}
+.mark{font-family:var(--f-latin);font-weight:400;font-size:15px;letter-spacing:.42em;text-transform:uppercase}
+.menu{display:flex;gap:26px;overflow-x:auto;scrollbar-width:none}
+.menu::-webkit-scrollbar{display:none}
+.menu a{flex:none;font-family:var(--f-latin);font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--soft);transition:color .3s}
+.menu a:hover,.menu a[aria-current="page"]{color:var(--ivory)}
+
+/* home: video hero */
+.hero{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.32))}
+.hero-t{position:absolute;inset:0;z-index:1;display:grid;place-items:center;margin:0;color:#fff;font-family:var(--f-latin);font-weight:300;font-size:clamp(56px,13vw,200px);letter-spacing:.18em;padding-left:.18em;line-height:1;text-shadow:0 2px 30px rgba(0,0,0,.25)}
+.snd{position:absolute;z-index:2;right:max(20px,env(safe-area-inset-right,0px));bottom:20px;background:none;border:1px solid rgba(255,255,255,.6);color:#fff;font:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:9px 14px;cursor:pointer}
+.snd:hover{background:rgba(255,255,255,.12)}
+/* home: triptych */
+.tri{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:clamp(8px,1.2vw,18px);align-items:center;padding-top:clamp(12px,3vw,40px)}
+.tri figure{margin:0;overflow:hidden;background:var(--raise)}
+.tri figure:nth-child(1),.tri figure:nth-child(3){aspect-ratio:3/4;margin-top:12%}
+.tri figure:nth-child(2){aspect-ratio:4/5}
+.tri img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);animation:drift 18s ease-out forwards}
+@keyframes drift{to{transform:scale(1)}}
+.intro{text-align:center;padding-block:clamp(56px,9vw,128px) clamp(48px,7vw,96px);display:grid;justify-items:center;gap:22px}
+.intro h1{margin:0;font-family:var(--f-latin);font-weight:300;font-size:clamp(34px,5vw,64px);line-height:1.15;letter-spacing:.14em;text-transform:uppercase}
+.intro h1 em{display:block;font-family:var(--f-ja);font-weight:400;text-transform:none;letter-spacing:.2em;font-size:.26em;color:var(--soft);margin-top:1.4em}
+.intro p{margin:0;max-width:30em;color:var(--soft);font-size:14px}
+.rule{width:1px;height:56px;background:var(--hair)}
+
+/* home: industry index as thumbnails */
+.index{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,1.4vw,20px);padding-bottom:clamp(72px,9vw,128px)}
+.chap{display:grid;gap:14px}
+.chap .ph{overflow:hidden;background:var(--raise);aspect-ratio:3/4}
+.chap .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.2,1),opacity 1.2s ease}
+.chap:hover .ph img{transform:scale(1.04)}
+.chap .tx{display:grid;gap:2px;text-align:center}
+.chap h2{margin:0;font-family:var(--f-latin);font-weight:400;font-size:clamp(19px,1.7vw,24px);line-height:1.2;letter-spacing:.06em}
+.chap .ja{font-size:12px;color:var(--soft);letter-spacing:.16em}
+.chap .cap-l{font-size:10px;margin-top:4px}
+
+/* industry page */
+.ihead{text-align:center;display:grid;justify-items:center;gap:18px;padding-block:clamp(48px,8vw,112px) clamp(48px,7vw,96px)}
+.ihead h1{margin:0;font-family:var(--f-latin);font-weight:300;font-size:clamp(48px,8vw,112px);line-height:1;letter-spacing:.06em}
+.ihead .ja{font-size:14px;letter-spacing:.3em;color:var(--soft)}
+.ihead p{margin:6px 0 0;max-width:30em;color:var(--soft);font-size:14px}
+.thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.4vw,20px)}
+.thumbs figure{margin:0;display:grid;gap:10px;align-content:start}
+.thumbs button{padding:0;border:0;background:var(--raise);cursor:zoom-in;display:block;width:100%;overflow:hidden;aspect-ratio:4/5}
+.thumbs button img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity 1.2s ease}
+.thumbs button:hover img{transform:scale(1.04)}
+.next{display:grid;justify-items:center;gap:14px;text-align:center;padding-block:clamp(96px,12vw,180px) clamp(64px,8vw,110px)}
+.next a{font-family:var(--f-latin);font-weight:300;font-size:clamp(34px,5vw,64px);line-height:1.1;letter-spacing:.04em;transition:color .4s}
+.next a:hover{color:var(--amber)}
+.next .all{font-size:13px;color:var(--soft);letter-spacing:.2em;border-bottom:1px solid var(--hair);padding-bottom:3px}
+
+/* closing */
+.closing{border-top:1px solid var(--hair);padding-block:clamp(56px,8vw,110px);display:grid;max-width:560px;margin-inline:auto}
+.closing h3{margin:0 0 18px;font-family:var(--f-latin);font-weight:400;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber)}
+.closing ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.closing li{display:flex;justify-content:space-between;gap:16px;font-size:14px}
+.closing li span{font-family:var(--f-latin);color:var(--soft);font-size:12px;letter-spacing:.18em;text-transform:uppercase;text-align:right}
+footer{padding-block:0 48px;text-align:center;font-family:var(--f-latin);font-size:12px;letter-spacing:.24em;color:var(--soft);text-transform:uppercase}
+
+/* viewer */
+.lb{position:fixed;inset:0;z-index:20;background:rgba(10,9,8,.985);display:grid;grid-template-rows:auto minmax(0,1fr) auto;animation:lbin .35s ease}
+@keyframes lbin{from{opacity:0}}
+.lb .bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) 12px max(18px,env(safe-area-inset-left,0px))}
+.lb .back{background:none;border:1px solid var(--hair);border-radius:999px;padding:8px 18px;font-size:13px;letter-spacing:.14em;cursor:pointer;color:var(--ivory)}
+.lb .back:hover{border-color:var(--soft)}
+.lb .ct{font-family:var(--f-latin);font-size:14px;letter-spacing:.2em;color:var(--soft);font-variant-numeric:lining-nums tabular-nums}
+.lb .stage{position:relative;display:grid;place-items:center;min-height:0;padding:0 clamp(0px,6vw,96px);touch-action:pan-y}
+.lb .stage img{max-width:100%;max-height:100%;object-fit:contain}
+.lb .nav{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:96px;border:0;background:transparent;color:var(--soft);font-family:var(--f-latin);font-size:34px;cursor:pointer;transition:color .3s}
+.lb .nav:hover{color:var(--ivory)}
+.lb .prev{left:max(6px,env(safe-area-inset-left,0px))}.lb .next-b{right:max(6px,env(safe-area-inset-right,0px))}
+.lb .cap{padding:14px max(18px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));text-align:center;display:grid;gap:2px}
+.lb .cap .d{font-family:var(--f-latin);font-size:12px;color:var(--soft);letter-spacing:.16em;text-transform:uppercase}
+
+@media (max-width:1100px) and (min-width:761px){.thumbs{grid-template-columns:repeat(3,minmax(0,1fr))}.index{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){
+  .top .wrap{flex-direction:column;align-items:center;gap:10px;padding-block:14px 16px}
+  .menu{gap:18px;max-width:100%}
+  .menu a{font-size:11px;letter-spacing:.18em}
+  .tri{grid-template-columns:1fr 1fr;gap:8px}
+  .tri figure:nth-child(2){grid-column:1/3;grid-row:1;aspect-ratio:4/5}
+  .tri figure:nth-child(1),.tri figure:nth-child(3){margin-top:0;aspect-ratio:4/5}
+  .index{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 10px}
+  .thumbs{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 8px}
+  .lb .nav{display:none}
+  .lb .stage{padding:0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header class="top"><div class="wrap"><a class="mark" href="#top">Photo Works</a><nav class="menu" id="menu" aria-label="業種"></nav></div></header>
+<main id="view"></main>
+<div class="wrap">
+  <div class="closing">
+    <div><h3>Services</h3><ul>
+      <li>メニュー・料理撮影<span>Restaurant &amp; Café</span></li>
+      <li>広告・キービジュアル<span>Advertising</span></li>
+      <li>EC・物撮り<span>Still life</span></li>
+      <li>ルックブック<span>Fashion</span></li>
+      <li>空間・物件撮影<span>Interior &amp; Resort</span></li>
+      <li>プロフィール写真<span>Portrait</span></li>
+    </ul></div>
+  </div>
+  <footer>All photographs © the photographer</footer>
+</div>
+
+<script>
+const W=[{"f": "14.jpg", "ch": "restaurant", "t": "キャンドルの灯るダイニング", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000, "hero": 1}, {"f": "02.jpg", "ch": "restaurant", "t": "肉料理の一皿", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 1333, "h": 2000}, {"f": "21.jpg", "ch": "restaurant", "t": "和牛の盛り合わせ", "cam": "Leica Q2", "lens": "SUMMILUX 1:1.7/28 ASPH.", "w": 725, "h": 1086}, {"f": "26.jpg", "ch": "restaurant", "t": "テラスのディナー", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "13.jpg", "ch": "restaurant", "t": "バーカウンターのカクテル", "cam": "Leica Q2", "lens": "SUMMILUX 1:1.7/28 ASPH.", "w": 725, "h": 1086}, {"f": "00.jpg", "ch": "restaurant", "t": "白卓のランチセット", "cam": "Leica SL3-S", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1333, "h": 2000}, {"f": "35.jpg", "ch": "restaurant", "t": "店内の灯り", "cam": "LUMIX S9", "lens": "45mm F2.8 DG DN | Contemporary 019", "w": 1333, "h": 2000}, {"f": "20.jpg", "ch": "restaurant", "t": "漆器の一品", "cam": "Sony α7C II", "lens": "FE 40mm F2.5 G", "w": 1333, "h": 2000}, {"f": "06.jpg", "ch": "restaurant", "t": "スパイスカレー", "cam": "LUMIX S9", "lens": "45mm F2.8 DG DN | Contemporary 019", "w": 1333, "h": 2000}, {"f": "08.jpg", "ch": "restaurant", "t": "ブランチの卓上", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R04.jpg", "ch": "restaurant", "t": "", "cam": "LUMIX S5IIX", "lens": "28-45mm F1.8 DG DN | Art 024", "w": 1333, "h": 2000}, {"f": "R10.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL3-S", "lens": "28-45mm F1.8 DG DN | Art 024", "w": 1333, "h": 2000}, {"f": "R17.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "R22.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1335, "h": 2000}, {"f": "R23.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1078, "h": 1617}, {"f": "R26.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1334, "h": 2000}, {"f": "R28.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1125, "h": 2000}, {"f": "R35.jpg", "ch": "restaurant", "t": "", "cam": "LUMIX S9", "lens": "45mm F2.8 DG DN | Contemporary 019", "w": 1333, "h": 2000}, {"f": "R37.jpg", "ch": "restaurant", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R38.jpg", "ch": "restaurant", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R39.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1335, "h": 2000}, {"f": "R40.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 2000, "h": 1335}, {"f": "R41.jpg", "ch": "restaurant", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1335, "h": 2000}, {"f": "R00.jpg", "ch": "cafe", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "17.jpg", "ch": "cafe", "t": "ラテを注ぐ手元", "cam": "LUMIX S5IIX", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1333, "h": 2000}, {"f": "27.jpg", "ch": "cafe", "t": "パンケーキのモーニング", "cam": "LUMIX S9", "lens": "45mm F2.8 DG DN | Contemporary 019", "w": 1333, "h": 2000}, {"f": "28.jpg", "ch": "cafe", "t": "フルーツタルト", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1335, "h": 2000}, {"f": "07.jpg", "ch": "cafe", "t": "ハンドドリップ", "cam": "LUMIX S5IIX", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1333, "h": 2000}, {"f": "18.jpg", "ch": "cafe", "t": "ショートケーキとジュース", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1333, "h": 2000}, {"f": "11.jpg", "ch": "cafe", "t": "サーモンのサンド", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "19.jpg", "ch": "cafe", "t": "ソファとサイドテーブル", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "R04.jpg", "ch": "cafe", "t": "", "cam": "LUMIX S5IIX", "lens": "28-45mm F1.8 DG DN | Art 024", "w": 1333, "h": 2000}, {"f": "R22.jpg", "ch": "cafe", "t": "", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1335, "h": 2000}, {"f": "R41.jpg", "ch": "cafe", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1335, "h": 2000}, {"f": "R43.jpg", "ch": "fashion", "t": "", "cam": "Canon EOS R6", "lens": "Canon EF 24-70mm f/2.8L II USM", "w": 1125, "h": 2000}, {"f": "04.jpg", "ch": "fashion", "t": "ファーベストのスタイリング", "cam": "LUMIX S5IIX", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1333, "h": 2000}, {"f": "09.jpg", "ch": "fashion", "t": "ネイビーのワンピース", "cam": "FUJIFILM GFX100RF", "lens": "", "w": 1335, "h": 2000}, {"f": "03.jpg", "ch": "fashion", "t": "シルバーフェザー", "cam": "Leica SL2", "lens": "105mm F2.8 DG DN MACRO | Art 020", "w": 1335, "h": 2000}, {"f": "33.jpg", "ch": "fashion", "t": "アゲートとピアス", "cam": "LUMIX S1", "lens": "105mm F2.8 DG DN MACRO | Art 020", "w": 1333, "h": 2000}, {"f": "16.jpg", "ch": "fashion", "t": "ボーダーシャツ", "cam": "LUMIX S5IIX", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1333, "h": 2000}, {"f": "01.jpg", "ch": "fashion", "t": "スニーカーケア用品", "cam": "Hasselblad 907X CFV II 50C", "lens": "XCD 45P", "w": 1499, "h": 2000}, {"f": "25.jpg", "ch": "fashion", "t": "白シャツとデニム", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1335, "h": 2000}, {"f": "R25.jpg", "ch": "fashion", "t": "", "cam": "Canon EOS R6", "lens": "Canon EF 24-70mm f/2.8L II USM", "w": 1333, "h": 2000}, {"f": "R33.jpg", "ch": "fashion", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1335, "h": 2000}, {"f": "R14.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "32.jpg", "ch": "lifestyle", "t": "湾岸のスポーツカー", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1335, "h": 2000}, {"f": "12.jpg", "ch": "lifestyle", "t": "香水ボトルと窓の影", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1333, "h": 2000}, {"f": "L03.jpg", "ch": "lifestyle", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "L09.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "105mm F2.8 DG DN MACRO | Art 020", "w": 1333, "h": 2000}, {"f": "L11.jpg", "ch": "lifestyle", "t": "", "cam": "Sony α7C II", "lens": "FE 40mm F2.5 G", "w": 1333, "h": 2000}, {"f": "N00.jpg", "ch": "lifestyle", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "N01.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "N02.jpg", "ch": "lifestyle", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R00.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "R01.jpg", "ch": "lifestyle", "t": "", "cam": "LUMIX S9", "lens": "90mm F2.8 DG | Contemporary 021", "w": 1333, "h": 2000}, {"f": "R03.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "17mm F4 DG DN | Contemporary 023", "w": 2000, "h": 1335}, {"f": "R05.jpg", "ch": "lifestyle", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R06.jpg", "ch": "lifestyle", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R07.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "R08.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "R09.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 1333, "h": 2000}, {"f": "R10.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "28-45mm F1.8 DG DN | Art 024", "w": 1333, "h": 2000}, {"f": "R13.jpg", "ch": "lifestyle", "t": "", "cam": "LUMIX S9", "lens": "14-24mm F2.8 DG DN | Art 019", "w": 2000, "h": 1333}, {"f": "R17.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "R22.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1335, "h": 2000}, {"f": "R24.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/35 ASPH.", "w": 1335, "h": 2000}, {"f": "R28.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1125, "h": 2000}, {"f": "R30.jpg", "ch": "lifestyle", "t": "", "cam": "Leica Q2", "lens": "SUMMILUX 1:1.7/28 ASPH.", "w": 2000, "h": 1335}, {"f": "R31.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "50mm F1.4 DG DN | Art 023", "w": 1335, "h": 2000}, {"f": "R32.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "50mm F1.4 DG DN | Art 023", "w": 1335, "h": 2000}, {"f": "R33.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1335, "h": 2000}, {"f": "R37.jpg", "ch": "lifestyle", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R42.jpg", "ch": "lifestyle", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1334, "h": 2000}, {"f": "R43.jpg", "ch": "lifestyle", "t": "", "cam": "Canon EOS R6", "lens": "Canon EF 24-70mm f/2.8L II USM", "w": 1125, "h": 2000}, {"f": "22.jpg", "ch": "space", "t": "ヴィラとプール", "cam": "LUMIX S9", "lens": "17mm F4 DG DN | Contemporary 023", "w": 1333, "h": 2000}, {"f": "24.jpg", "ch": "space", "t": "海へ続くプール", "cam": "LUMIX S9", "lens": "45mm F2.8 DG DN | Contemporary 019", "w": 1333, "h": 2000}, {"f": "31.jpg", "ch": "space", "t": "ビーチリゾート", "cam": "LUMIX S9", "lens": "17mm F4 DG DN | Contemporary 023", "w": 1333, "h": 2000}, {"f": "23.jpg", "ch": "space", "t": "縦ブラインドの会議室", "cam": "Leica SL2", "lens": "50mm F1.4 DG DN | Art 023", "w": 725, "h": 1086}, {"f": "R02.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 2000}, {"f": "R03.jpg", "ch": "space", "t": "", "cam": "Leica SL2", "lens": "17mm F4 DG DN | Contemporary 023", "w": 2000, "h": 1335}, {"f": "R05.jpg", "ch": "space", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R07.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "R08.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 1333, "h": 2000}, {"f": "R09.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 1333, "h": 2000}, {"f": "R11.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 1333, "h": 2000}, {"f": "R12.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "14-24mm F2.8 DG DN | Art 019", "w": 2000, "h": 1333}, {"f": "R13.jpg", "ch": "space", "t": "", "cam": "LUMIX S9", "lens": "14-24mm F2.8 DG DN | Art 019", "w": 2000, "h": 1333}, {"f": "R14.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "R15.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 2000, "h": 1333}, {"f": "R16.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 1333, "h": 2000}, {"f": "R17.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "R18.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "R19.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 2000}, {"f": "R20.jpg", "ch": "space", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 2000}, {"f": "R24.jpg", "ch": "space", "t": "", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/35 ASPH.", "w": 1335, "h": 2000}, {"f": "R30.jpg", "ch": "space", "t": "", "cam": "Leica Q2", "lens": "SUMMILUX 1:1.7/28 ASPH.", "w": 2000, "h": 1335}, {"f": "R31.jpg", "ch": "space", "t": "", "cam": "Leica SL2", "lens": "50mm F1.4 DG DN | Art 023", "w": 1335, "h": 2000}, {"f": "R32.jpg", "ch": "space", "t": "", "cam": "Leica SL2", "lens": "50mm F1.4 DG DN | Art 023", "w": 1335, "h": 2000}, {"f": "R37.jpg", "ch": "space", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R38.jpg", "ch": "space", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R29.jpg", "ch": "other", "t": "", "cam": "LUMIX S1", "lens": "105mm F2.8 DG DN MACRO | Art 020", "w": 1333, "h": 2000}, {"f": "15.jpg", "ch": "other", "t": "黒背景のプロダクト", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 1333, "h": 2000}, {"f": "34.jpg", "ch": "other", "t": "ボトルと白い箱", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "30.jpg", "ch": "other", "t": "白背景の物撮り", "cam": "LUMIX S5IIX", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 2000, "h": 2000}, {"f": "05.jpg", "ch": "other", "t": "経営者ポートレート", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 2000, "h": 1335}, {"f": "29.jpg", "ch": "other", "t": "スーツのポートレート", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 2000, "h": 1335}, {"f": "10.jpg", "ch": "other", "t": "スポーツカーとモデル", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "R06.jpg", "ch": "other", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R14.jpg", "ch": "other", "t": "", "cam": "Leica SL3-S", "lens": "VARIO-ELMARIT-SL 1:2.8-4/24-90 ASPH.", "w": 2000, "h": 1333}, {"f": "R21.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "APO-SUMMICRON-SL 1:2/50 ASPH.", "w": 2000, "h": 1335}, {"f": "R25.jpg", "ch": "other", "t": "", "cam": "Canon EOS R6", "lens": "Canon EF 24-70mm f/2.8L II USM", "w": 1333, "h": 2000}, {"f": "R27.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1335, "h": 2000}, {"f": "R28.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1125, "h": 2000}, {"f": "R31.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "50mm F1.4 DG DN | Art 023", "w": 1335, "h": 2000}, {"f": "R32.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "50mm F1.4 DG DN | Art 023", "w": 1335, "h": 2000}, {"f": "R33.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1335, "h": 2000}, {"f": "R34.jpg", "ch": "other", "t": "", "cam": "LUMIX S5IIX", "lens": "24-70mm F2.8 DG DN | Art 019", "w": 1333, "h": 2000}, {"f": "R36.jpg", "ch": "other", "t": "", "cam": "Leica Q3 43", "lens": "APO-SUMMICRON 1:2/43 ASPH.", "w": 1331, "h": 2000}, {"f": "R39.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1335, "h": 2000}, {"f": "R40.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 2000, "h": 1335}, {"f": "R41.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1335, "h": 2000}, {"f": "R42.jpg", "ch": "other", "t": "", "cam": "Leica SL2", "lens": "28-70mm F2.8 DG DN | Contemporary 021", "w": 1334, "h": 2000}, {"f": "R43.jpg", "ch": "other", "t": "", "cam": "Canon EOS R6", "lens": "Canon EF 24-70mm f/2.8L II USM", "w": 1125, "h": 2000}];
+const CH=[
+  {k:"restaurant",en:"Restaurant",ja:"レストラン",cover:"14.jpg",note:"Light that stays<br>after the plate is cleared.",d:"コース料理の一皿、カウンターの灯り、夜のテラス。メニューやWebサイト、広告にそのまま使える写真を撮っています。"},
+  {k:"cafe",en:"Café",ja:"カフェ",cover:"R00.jpg",note:"Morning light,<br>kept as it was.",d:"モーニングからスイーツ、ドリンクを淹れる手元まで。自然光で柔らかく、色を濁らせずに仕上げます。"},
+  {k:"fashion",en:"Fashion",ja:"ファッション",cover:"R43.jpg",note:"Texture first,<br>then the figure.",d:"ロケーションでのルックブックから、白背景のEC、ジュエリーの寄りまで。"},
+  {k:"lifestyle",en:"Lifestyle",ja:"ライフスタイル",cover:"R14.jpg",d:"車のある風景、デスクまわり、バーのひととき、香りや時計、街のスナップ。暮らしの中のワンシーンを広告のトーンで切り取ります。"},
+  {k:"space",en:"Space",ja:"空間・物件",cover:"22.jpg",note:"A distance<br>you would want to stay in.",d:"ホテルやリゾート、店舗の内外観、インテリア、街並みと建築。そこに滞在したくなる距離感で切り取ります。"},
+  {k:"other",en:"Still &amp; Portrait",ja:"プロダクト・車・人物",cover:"R29.jpg",note:"One object,<br>one light.",d:"黒背景・白背景の物撮り、パッケージ、車、人物やプロフィールの写真。"}
+];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const data=r=>[r.cam,r.lens].filter(Boolean).join(" — ");
+const itemsOf=k=>W.filter(w=>w.ch===k);
+const roman=["I","II","III","IV","V","VI"];
+const img=(f,alt,eager)=>`<img class="fade loading" src="img/${f}" alt="${esc(alt)}" loading="${eager?"eager":"lazy"}" onload="this.classList.remove('loading')" onerror="this.classList.remove('loading')">`;
+
+$("#menu").innerHTML=CH.map(c=>`<a href="#${c.k}" data-k="${c.k}">${c.en}</a>`).join("");
+
+let list=[];
+function renderHome(){
+  list=[];
+  $("#view").innerHTML=`<section class="hero" aria-label="WORKS"><video id="hv" src="vid/hero.mp4" poster="img/hero_poster.jpg" autoplay muted loop playsinline preload="auto"></video><h1 class="hero-t">WORKS</h1><button type="button" class="snd" id="snd" aria-pressed="false">Sound off</button></section><div class="wrap">
+   <section class="intro"><span class="cap-l">Commercial Photography</span><h1>Photo Works<em>レストラン・カフェ・ファッション・ライフスタイル・空間</em></h1><div class="rule"></div><p>レストラン、カフェ、ファッション、ライフスタイル、空間。業種ごとに撮影実績をまとめています。ご覧になりたい分野をお選びください。</p></section>
+   <section class="index">${CH.map((c,i)=>`<a class="chap" href="#${c.k}"><div class="ph">${img(c.cover,c.ja+"の撮影例",false)}</div><div class="tx"><h2>${c.en}</h2><span class="ja">${esc(c.ja)}</span></div></a>`).join("")}</section>
+  </div>`;
+  const v=$("#hv"),b=$("#snd");
+  b.onclick=()=>{v.muted=!v.muted;if(!v.muted)v.play();b.textContent=v.muted?"Sound off":"Sound on";b.setAttribute("aria-pressed",String(!v.muted))};
+}
+function renderIndustry(ci){
+  const c=CH[ci];list=itemsOf(c.k);
+  const html=list.map((w,n)=>`<figure><button type="button" data-n="${n}" aria-label="写真${n+1}を拡大">${img(w.f,c.ja+"の撮影例",n<8)}</button></figure>`).join("");
+  const next=CH[(ci+1)%CH.length];
+  $("#view").innerHTML=`<div class="wrap"><header class="ihead"><span class="cap-l">${roman[ci]}</span><h1>${c.en}</h1><span class="ja">${esc(c.ja)}</span><div class="rule"></div><p>${esc(c.d)}</p></header>
+   <div class="thumbs">${html}</div>
+   <nav class="next" aria-label="次の業種"><span class="cap-l">Next</span><a href="#${next.k}">${next.en}</a><a class="all" href="#top">すべての業種を見る</a></nav></div>`;
+  $("#view").querySelectorAll(".thumbs button").forEach(b=>b.onclick=()=>openLb(+b.dataset.n));
+}
+function route(){
+  closeLb();
+  const k=location.hash.slice(1),ci=CH.findIndex(c=>c.k===k);
+  ci<0?renderHome():renderIndustry(ci);
+  document.querySelectorAll("#menu a").forEach(a=>{if(a.dataset.k===k)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  scrollTo(0,0);
+}
+addEventListener("hashchange",route);
+
+let cur=-1;
+function openLb(n){
+  if(!list.length)return;
+  n=(n+list.length)%list.length;cur=n;const w=list[n];
+  let d=$("#lb");
+  if(!d){d=document.createElement("div");d.id="lb";d.className="lb";d.setAttribute("role","dialog");d.setAttribute("aria-modal","true");
+    d.innerHTML=`<div class="bar"><button class="back" type="button">一覧に戻る</button><span class="ct"></span></div><div class="stage"><img alt=""><button class="nav prev" type="button" aria-label="前の写真">‹</button><button class="nav next-b" type="button" aria-label="次の写真">›</button></div><div class="cap"><span class="d"></span></div>`;
+    document.body.append(d);document.body.style.overflow="hidden";
+    d.querySelector(".back").onclick=closeLb;
+    d.querySelector(".prev").onclick=()=>openLb(cur-1);d.querySelector(".next-b").onclick=()=>openLb(cur+1);
+    const st=d.querySelector(".stage");let sx=0,sy=0;
+    st.addEventListener("click",e=>{if(e.target===st||e.target.tagName==="IMG")closeLb()});
+    st.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+    st.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+      if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))openLb(cur+(dx<0?1:-1));else if(dy>90&&dy>Math.abs(dx))closeLb()},{passive:true});
+    d.querySelector(".back").focus({preventScroll:true});
+  }
+  const im=d.querySelector(".stage img");im.src="img/"+w.f;im.alt="撮影例";
+  d.querySelector(".ct").textContent=`${String(n+1).padStart(2,"0")} / ${String(list.length).padStart(2,"0")}`;
+  d.querySelector(".cap .d").textContent=data(w);
+}
+function closeLb(){const d=$("#lb");if(!d)return;d.remove();document.body.style.overflow=""}
+addEventListener("keydown",e=>{if(!$("#lb"))return;if(e.key==="Escape")closeLb();if(e.key==="ArrowRight")openLb(cur+1);if(e.key==="ArrowLeft")openLb(cur-1)});
+route();
+</script>
+
+</body>
+</html>
