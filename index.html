@@ -170,12 +170,10 @@ $("#menu").innerHTML=CH.map(c=>`<a href="#${c.k}" data-k="${c.k}">${c.en}</a>`).
 let list=[];
 function renderHome(){
   list=[];
-  $("#view").innerHTML=`<section class="hero" aria-label="WORKS"><video id="hv" src="vid/hero.mp4" poster="img/hero_poster.jpg" autoplay muted loop playsinline preload="auto"></video><h1 class="hero-t">WORKS</h1><button type="button" class="snd" id="snd" aria-pressed="false">Sound off</button></section><div class="wrap">
+  $("#view").innerHTML=`<section class="hero" aria-label="WORKS"><video id="hv" src="vid/hero.mp4" poster="img/hero_poster.jpg" autoplay muted loop playsinline preload="auto"></video><h1 class="hero-t">WORKS</h1></section><div class="wrap">
    <section class="intro"><span class="cap-l">Commercial Photography</span><h1>Photo Works<em>レストラン・カフェ・ファッション・ライフスタイル・空間</em></h1><div class="rule"></div><p>レストラン、カフェ、ファッション、ライフスタイル、空間。業種ごとに撮影実績をまとめています。ご覧になりたい分野をお選びください。</p></section>
    <section class="index">${CH.map((c,i)=>`<a class="chap" href="#${c.k}"><div class="ph">${img(c.cover,c.ja+"の撮影例",false)}</div><div class="tx"><h2>${c.en}</h2><span class="ja">${esc(c.ja)}</span></div></a>`).join("")}</section>
   </div>`;
-  const v=$("#hv"),b=$("#snd");
-  b.onclick=()=>{v.muted=!v.muted;if(!v.muted)v.play();b.textContent=v.muted?"Sound off":"Sound on";b.setAttribute("aria-pressed",String(!v.muted))};
 }
 function renderIndustry(ci){
   const c=CH[ci];list=itemsOf(c.k);
