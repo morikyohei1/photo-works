@@ -96,6 +96,16 @@ img{display:block}
 .closing ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
 .closing li{display:flex;justify-content:space-between;gap:16px;font-size:14px}
 .closing li span{font-family:var(--f-latin);color:var(--soft);font-size:12px;letter-spacing:.18em;text-transform:uppercase;text-align:right}
+/* contact */
+.contact{scroll-margin-top:130px;border-top:1px solid var(--hair);padding-block:clamp(56px,8vw,110px) clamp(64px,9vw,120px);display:grid;justify-items:center;text-align:center;gap:18px;max-width:640px;margin-inline:auto}
+.contact h3{margin:0;font-family:var(--f-latin);font-weight:400;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber)}
+.contact p{margin:0;color:var(--soft);font-size:14px}
+.ct-links{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;margin-top:14px}
+.ct-btn{display:grid;gap:6px;padding:22px 16px;border:1px solid var(--hair);color:var(--ivory);text-decoration:none;transition:border-color .3s,background .3s}
+.ct-btn:hover{border-color:var(--ivory);background:rgba(255,255,255,.04)}
+.ct-k{font-family:var(--f-latin);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--soft)}
+.ct-v{font-family:var(--f-latin);font-variant-numeric:lining-nums;font-size:17px;letter-spacing:.06em;overflow-wrap:anywhere}
+@media (max-width:640px){.ct-links{grid-template-columns:1fr}}
 footer{padding-block:0 48px;text-align:center;font-family:var(--f-latin);font-size:12px;letter-spacing:.24em;color:var(--soft);text-transform:uppercase}
 
 /* viewer */
@@ -145,7 +155,14 @@ footer{padding-block:0 48px;text-align:center;font-family:var(--f-latin);font-si
       <li>プロフィール写真<span>Portrait</span></li>
     </ul></div>
   </div>
-  <footer>All photographs © the photographer</footer>
+  <section class="contact" id="contact" aria-labelledby="ct-h">
+    <h3 id="ct-h">Contact</h3>
+    <p>撮影のご依頼・ご相談は、Instagramのメッセージかメールでお気軽にどうぞ。</p>
+    <div class="ct-links">
+      <a class="ct-btn" href="https://www.instagram.com/mkyohei/" target="_blank" rel="noopener"><span class="ct-k">Instagram</span><span class="ct-v">@mkyohei</span></a>
+      <a class="ct-btn" href="mailto:k.mori@1035inc.tokyo?subject=%E6%92%AE%E5%BD%B1%E3%81%AE%E3%81%94%E7%9B%B8%E8%AB%87"><span class="ct-k">Mail</span><span class="ct-v">k.mori@1035inc.tokyo</span></a>
+    </div>
+  </section>
 </div>
 
 <script>
@@ -165,7 +182,8 @@ const itemsOf=k=>W.filter(w=>w.ch===k);
 const roman=["I","II","III","IV","V","VI"];
 const img=(f,alt,eager)=>`<img class="fade loading" src="img/${f}" alt="${esc(alt)}" loading="${eager?"eager":"lazy"}" onload="this.classList.remove('loading')" onerror="this.classList.remove('loading')">`;
 
-$("#menu").innerHTML=CH.map(c=>`<a href="#${c.k}" data-k="${c.k}">${c.en}</a>`).join("");
+$("#menu").innerHTML=CH.map(c=>`<a href="#${c.k}" data-k="${c.k}">${c.en}</a>`).join("")+`<a href="#contact" id="to-ct">Contact</a>`;
+$("#to-ct").addEventListener("click",e=>{e.preventDefault();$("#contact").scrollIntoView({behavior:"smooth"})});
 
 let list=[];
 function renderHome(){
