@@ -184,6 +184,7 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const data=r=>[r.cam,r.lens].filter(Boolean).join(" — ");
 const itemsOf=k=>W.filter(w=>w.ch===k);
+const shuffled=(arr,keep)=>{const top=arr.filter(w=>w.f===keep),rest=arr.filter(w=>w.f!==keep);for(let i=rest.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[rest[i],rest[j]]=[rest[j],rest[i]]}return top.concat(rest)};
 const roman=["I","II","III","IV","V","VI"];
 const img=(f,alt,eager)=>`<img class="fade loading" src="img/${f}" alt="${esc(alt)}" loading="${eager?"eager":"lazy"}" onload="this.classList.remove('loading')" onerror="this.classList.remove('loading')">`;
 
@@ -199,7 +200,7 @@ function renderHome(){
   </div>`;
 }
 function renderIndustry(ci){
-  const c=CH[ci];list=itemsOf(c.k);
+  const c=CH[ci];list=shuffled(itemsOf(c.k),c.cover);
   const html=list.map((w,n)=>`<figure><button type="button" data-n="${n}" aria-label="写真${n+1}を拡大">${img(w.f,c.ja+"の撮影例",n<8)}</button></figure>`).join("");
   const next=CH[(ci+1)%CH.length];
   $("#view").innerHTML=`<div class="wrap"><header class="ihead"><span class="cap-l">${roman[ci]}</span><h1>${c.en}</h1><span class="ja">${esc(c.ja)}</span><div class="rule"></div><p>${esc(c.d)}</p></header>
