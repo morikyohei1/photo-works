@@ -63,7 +63,7 @@ img{display:block}
 @keyframes drift{to{transform:scale(1)}}
 .intro{text-align:center;padding-block:clamp(56px,9vw,128px) clamp(48px,7vw,96px);display:grid;justify-items:center;gap:22px}
 .intro h1{margin:0;font-family:var(--f-latin);font-weight:300;font-size:clamp(34px,5vw,64px);line-height:1.15;letter-spacing:.14em;text-transform:uppercase}
-.intro h1 em{display:block;font-family:var(--f-ja);font-weight:400;text-transform:none;letter-spacing:.2em;font-size:.26em;color:var(--soft);margin-top:1.4em}
+.intro h1 em{display:block;margin-top:0!important;font-family:var(--f-ja);font-weight:400;text-transform:none;letter-spacing:.2em;font-size:.26em;color:var(--soft);margin-top:1.4em}
 .intro p{margin:0;max-width:30em;color:var(--soft);font-size:14px}
 .rule{width:1px;height:56px;background:var(--hair)}
 
@@ -194,7 +194,7 @@ let list=[];
 function renderHome(){
   list=[];
   $("#view").innerHTML=`<section class="hero" aria-label="WORKS"><video id="hv" src="vid/hero.mp4" poster="img/hero_poster.jpg" autoplay muted loop playsinline preload="auto"></video><div class="hero-t"><h1>WORKS</h1></div></section><div class="wrap">
-   <section class="intro"><span class="cap-l">Commercial Photography</span><h1>WORKS<em>レストラン・カフェ・ファッション・ライフスタイル・ホテル／不動産／商業施設・商品／サービス</em></h1><div class="rule"></div><p>業種ごとに撮影実績をまとめています。ご覧になりたい分野をお選びください。</p></section>
+   <section class="intro"><span class="cap-l">Commercial Photography</span><h1 aria-label="WORKS"><em>レストラン・カフェ・ファッション・ライフスタイル・ホテル／不動産／商業施設・商品／サービス</em></h1><div class="rule"></div><p>業種ごとに撮影実績をまとめています。<br>ご覧になりたい分野をお選びください。</p></section>
    <section class="index">${CH.map((c,i)=>`<a class="chap" href="#${c.k}"><div class="ph">${img(c.cover,c.ja+"の撮影例",false)}</div><div class="tx"><h2>${c.en}</h2><span class="ja">${esc(c.ja)}</span></div></a>`).join("")}</section>
   </div>`;
 }
